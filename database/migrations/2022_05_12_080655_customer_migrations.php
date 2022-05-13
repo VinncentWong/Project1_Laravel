@@ -14,15 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('customers', function(Blueprint $table){
-            $table->bigIncrements('id')->primary();
-            $table->string('name')->nullable(false);
-            $table->string('email')->nullable(false);
-            $table->string('password')->nullable(false);
-            $table->string('address')->nullable(false);
-            $table->date('created_at');
-            $table->date('updated_at');
-            $table->date('deleted_at');
+            $table->id('id');
+            $table->string('name')->nullable(false)->default('Anonymous');
+            $table->string('email')->nullable(false)->default('Anonymous');
+            $table->string('password')->nullable(false)->default('912309812470812837182401231203812737');
+            $table->string('address')->nullable(false)->default('Anonymous');
+            $table->timestamps();
         });
+
     }
 
     /**

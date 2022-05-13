@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('invoices', function(Blueprint $blueprint){
-            $blueprint->bigIncrements('id')->primary();
+            $blueprint->id('id');
             $blueprint->string('name')->nullable(false);
-            $blueprint->bigInteger('price', false, true)->nullable(false);
-            $blueprint->foreign('customers_invoices')->references('id')->on('customers');
-            $blueprint->date('created_at');
-            $blueprint->date('updated_at');
-            $blueprint->date('deleted_at');
+            $blueprint->unsignedBigInteger('price', false, true)->nullable(false);
+            $blueprint->timestamps();
+        });
+
+        Schema::table('invoices', function(Blueprint $blueprint){
+            $blueprint->unsignedBigInteger('customers_invoices');
+            $blueprint->foreign('customers_invoices')->references('id')->on('customers')->onUpdate('cascade');
         });
     }
 

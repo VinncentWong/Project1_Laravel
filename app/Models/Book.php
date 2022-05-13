@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+
+    protected $timestamp = true;
+    protected $guarded = ['id', 'created_at'];
 }

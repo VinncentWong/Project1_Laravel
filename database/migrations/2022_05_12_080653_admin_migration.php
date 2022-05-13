@@ -14,13 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('admins', function(Blueprint $table){
-            $table->bigIncrements('id')->primary();
+            $table->id('id');
             $table->string('name')->nullable(false);
             $table->string('password')->nullable(false);
-            $table->date('birth');
-            $table->date('created_at');
-            $table->date('updated_at');
-            $table->date('deleted_at');
+            $table->string('address')->nullable(false);
+            $table->timestamps();
         });
     }
 

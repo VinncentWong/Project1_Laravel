@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::post('/addBook', [BookController::class, 'addBook']);
+
+Route::prefix('/customer')->group(function () {
+    Route::get("/greeting", function(){
+        return "Hallo Customer Kebanggaan Kami !";
+    });
+    Route::post('/addcustomer', [CustomerController::class, 'addCustomer']);
 });
