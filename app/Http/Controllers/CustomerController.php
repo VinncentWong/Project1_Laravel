@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use DateTime;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -14,9 +13,20 @@ class CustomerController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        $bodyLogin = $request->all();
-        $bodyLogin['created_at'] = date("Y-m-d H:i:s");
-        $customer = new Customer();
-        return $customer->save($bodyLogin);
+        Customer::create($request->all());
+    }
+
+    public function getAllCustomer(Request $request){
+        $customers = Customer::all();
+        return $customers;
+    }
+
+    public function getCustomerById($id){
+        return Customer::findOrFail($id);
+    }
+
+    public function deleteCustomer($id){
+        $customers = Customer::findOrFail($id);
+        return $customers->delete();
     }
 }

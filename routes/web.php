@@ -26,4 +26,7 @@ Route::prefix('/customer')->group(function () {
         return "Hallo Customer Kebanggaan Kami !";
     });
     Route::post('/addcustomer', [CustomerController::class, 'addCustomer']);
+    Route::get("/getcustomers", [CustomerController::class, 'getAllCustomer']);
+    Route::get("/getcustomer/{id}", [CustomerController::class, 'getCustomerById']);
+    Route::delete("/delete/{id}",[CustomerController::class, 'deleteCustomer']);
 });
