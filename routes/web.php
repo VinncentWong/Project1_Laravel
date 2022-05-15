@@ -25,8 +25,10 @@ Route::prefix('/customer')->group(function () {
     Route::get("/greeting", function(){
         return "Hallo Customer Kebanggaan Kami !";
     });
+    Route::post('/login', [CustomerController::class, 'login']);
     Route::post('/addcustomer', [CustomerController::class, 'addCustomer']);
-    Route::get("/getcustomers", [CustomerController::class, 'getAllCustomer']);
+    Route::get("/getcustomers", [CustomerController::class, 'getAllCustomer'])->middleware('isCustomer');
     Route::get("/getcustomer/{id}", [CustomerController::class, 'getCustomerById']);
     Route::delete("/delete/{id}",[CustomerController::class, 'deleteCustomer']);
+    Route::patch("/update/{id}",[CustomerController::class, 'updateCustomer']);
 });
