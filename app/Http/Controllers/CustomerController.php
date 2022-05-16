@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
+    public function vAddCustomer(){
+        return view('layouts.SignUp');
+    }
     public function addCustomer(Request $request){
         $request->validate([
             'name' => 'required',
@@ -17,29 +20,38 @@ class CustomerController extends Controller
             'password' => 'required'
         ]);
         $request['password'] = Hash::make($request->input('password'));
-        return Customer::create($request->all());
+        Customer::create($request->all());
+        return redirect("/home");
     }
 
+    public function vLogin(){
+        return view('login');
+    }
     public function login(Request $request){
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
-        $email = $request->input('email');
         $password = $request->input('password');
 
-        if(Auth::attempt([
-            'name' => $email,
-            'password' => $password
-        ])){
-            return response('User Authenticated !', 200);
+        $customerData = Customer::findOrFail('$email');
+        $validation = Hash::check($password, $customerData);
+        if($validation){
+            return response()->json([
+                'message' => 'User Authenticated',
+                'code' => 200
+            ]);
         } else {
-            return response('Unauthorized', 401);
+            return response()->json([
+                'message' => 'User not authenticated !',
+                'code' => 401,
+                'email' => $request['email'],
+                'password' => $request['password']
+            ]);;
         }
     }
 
-    public function getAllCustomer(Request $request){
+    public function getAllCustomer(){
         $customers = Customer::all();
         return $customers;
     }

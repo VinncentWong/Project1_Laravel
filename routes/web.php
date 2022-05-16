@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\JWTController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,21 +15,29 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get("/", function(){
+    return redirect()->route('home');
+});
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/home', function () {
+    $greeting = 'Welcome to Home Page !';
+    return view('greeting')->with('greeting', $greeting);
+})->name('home');
+
+Route::get("/about", function(){
+    $sentence = "This is a practice to learn Laravel for Web PK2MABA Project";
+    return view("about")->with('sentence', $sentence);
 });
 
 Route::post('/addBook', [BookController::class, 'addBook']);
 
 Route::prefix('/customer')->group(function () {
-    Route::get("/greeting", function(){
-        return "Hallo Customer Kebanggaan Kami !";
-    });
+    Route::get('/login', [CustomerController::class, 'vLogin']);
     Route::post('/login', [CustomerController::class, 'login']);
-    Route::post('/addcustomer', [CustomerController::class, 'addCustomer']);
+    Route::get('/signup', [CustomerController::class, 'vAddCustomer']);
+    Route::post('/signup', [CustomerController::class, 'addCustomer']);
     Route::get("/getcustomers", [CustomerController::class, 'getAllCustomer'])->middleware('isCustomer');
-    Route::get("/getcustomer/{id}", [CustomerController::class, 'getCustomerById']);
-    Route::delete("/delete/{id}",[CustomerController::class, 'deleteCustomer']);
-    Route::patch("/update/{id}",[CustomerController::class, 'updateCustomer']);
+    Route::get("/getcustomer/{id}", [CustomerController::class, 'getCustomerById'])->middleware('isCustomer');
+    Route::delete("/delete/{id}",[CustomerController::class, 'deleteCustomer'])->middleware('isCustomer');
+    Route::patch("/update/{id}",[CustomerController::class, 'updateCustomer'])->middleware('isCustomer');
 });

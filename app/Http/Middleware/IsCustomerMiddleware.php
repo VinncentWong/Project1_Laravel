@@ -17,15 +17,20 @@ class IsCustomerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
 
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt([
+            'email' => $request['email'],
+            'password' => $request['password'],
+        ])){
             return $next($request);
         } else {
-            return response('Unauthorized', 401);
+            return response()->json([
+                'message' => 'unauthorized',
+                'success' => 'false',
+                'code' => '401',
+                'email' => $request['email'],
+                'password' => $request['password'],
+            ]);
         }
     }
 }
